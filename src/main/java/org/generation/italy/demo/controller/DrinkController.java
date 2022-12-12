@@ -63,7 +63,7 @@ public class DrinkController {
 	}
 	
 	@PostMapping("/create")
-	public String storeDrink(@Valid @ModelAttribute("drink") Drink drink, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+	public String storeDrink(@Valid @ModelAttribute("drink") Drink drink, Error e, BindingResult bindingResult, RedirectAttributes redirectAttributes)
 	{
 		if (bindingResult.hasErrors()) {
 			

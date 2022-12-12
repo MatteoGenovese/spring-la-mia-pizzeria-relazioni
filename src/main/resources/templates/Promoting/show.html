@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body th:object="${promoting}">
+
+	<h1>
+		[[*{title}]]
+	</h1>
+	
+	
+	<ul>
+		<li>
+			id: [[*{id}]]
+		</li>
+		<li>
+			start date: [[*{startDate}]]
+		</li>
+		<li>
+			end date: [[*{endDate}]]
+		</li>
+	</ul>
+	
+	<a th:href="@{/promoting/edit/{id} (id=*{id})}">edit</a>
+	
+	<a th:href="@{/promoting/delete/{id} (id=*{id})}">delete</a>
+	
+		<a href="/promoting">Home</a>
+
+</body>
+</html>

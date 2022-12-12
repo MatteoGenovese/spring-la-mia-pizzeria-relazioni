@@ -1,10 +1,11 @@
+
 package org.generation.italy.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.generation.italy.demo.pojo.Pizza;
-import org.generation.italy.demo.service.Pizzaservice;
+import org.generation.italy.demo.pojo.Promoting;
+import org.generation.italy.demo.service.PromotingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,59 +20,60 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 
+
 @Controller
-@RequestMapping("/pizza")
-public class PizzaController {
+@RequestMapping("/promoting")
+public class PromotingController {
 	
 	@Autowired
-	private Pizzaservice pizzaService;
+	private PromotingService promotingService;
 	
 	@GetMapping
-	public String getPizzaList(Model model) {
+	public String getPromotingList(Model model) {
 		
-		List<Pizza> pizzaList = pizzaService.findAll();
-		model.addAttribute("pizzaList", pizzaList);
+		List<Promoting> promotingList = promotingService.findAll();
+		model.addAttribute("promotingList", promotingList);
 		
-		return "pizza/index";
+		return "promoting/index";
 	}
 	
 	@GetMapping("/{id}")
-	public String getPizzaById(@PathVariable("id") int id, Model model)
+	public String getPromotingById(@PathVariable("id") int id, Model model)
 	{
-		Optional<Pizza> optPizza = pizzaService.getPizzaById(id);
+		Optional<Promoting> optPromoting = promotingService.getPromotingById(id);
 		
-		Pizza pizza =optPizza.get();
+		Promoting promoting =optPromoting.get();
 		
-		model.addAttribute("pizza", pizza);
+		model.addAttribute("promoting", promoting);
 		
-		return "pizza/show";
+		return "promoting/show";
 	}
 	
 	
 	@GetMapping("/create")
-	public String createPizza( Model model)
+	public String createPromoting( Model model)
 	{
 
 		
-		Pizza pizza = new Pizza();
+		Promoting promoting = new Promoting();
 		
-		model.addAttribute("pizza", pizza);
+		model.addAttribute("promoting", promoting);
 		model.addAttribute("type", "create");
-		model.addAttribute("h1text", "Create a new pizza for the list:");
+		model.addAttribute("h1text", "Create a new promoting for the list:");
 		
-		return "pizza/form";
+		return "promoting/form";
 	}
 	
 	@PostMapping("/create")
-	public String storePizza(@Valid @ModelAttribute("pizza") Pizza pizza)
+	public String storePromoting(@Valid @ModelAttribute("promoting") Promoting promoting)
 	{
-		pizzaService.save(pizza);
+		promotingService.save(promoting);
 		
-		return "redirect:/pizza";
+		return "redirect:/promoting";
 	}
 	
 	@GetMapping("/edit/{id}")
-	public String editPizza(@PathVariable("id") int id, Model model,Error e, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+	public String editPromoting(@PathVariable("id") int id, Model model, Error e, BindingResult bindingResult, RedirectAttributes redirectAttributes)
 	{
 
 		if (bindingResult.hasErrors()) {
@@ -82,24 +84,24 @@ public class PizzaController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drinks/create";
+			return "redirect:/promoting/create";
 		}
 		
-		Optional<Pizza> optPizza = pizzaService.getPizzaById(id);
+		Optional<Promoting> optPromoting = promotingService.getPromotingById(id);
 		
-		Pizza pizza =optPizza.get();
+		Promoting promoting =optPromoting.get();
 		
-		model.addAttribute("pizza", pizza);
+		model.addAttribute("promoting", promoting);
 		
 		model.addAttribute("type", "edit");
-		model.addAttribute("h1text", "Update pizza:");
+		model.addAttribute("h1text", "Update promoting:");
 		
 		
-		return "pizza/form";
+		return "promoting/form";
 	}
 	
 	@PostMapping("/edit")
-	public String updatePizza(@Valid @ModelAttribute("pizza") Pizza pizza, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+	public String updatePromoting(@Valid @ModelAttribute("promoting") Promoting promoting, BindingResult bindingResult, RedirectAttributes redirectAttributes)
 	{
 		if (bindingResult.hasErrors()) {
 			
@@ -109,18 +111,18 @@ public class PizzaController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drinks/create";
+			return "redirect:/promoting/create";
 		}
-		pizzaService.save(pizza);
+		promotingService.save(promoting);
 		
-		return "redirect:/pizza";
+		return "redirect:/promoting";
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteBook(@PathVariable("id") int id) {
 		
-		pizzaService.delete(id);
-		return "redirect:/pizza";
+		promotingService.delete(id);
+		return "redirect:/promoting";
 	}
 	
 	@GetMapping("/search")
@@ -128,14 +130,14 @@ public class PizzaController {
 			@RequestParam(name = "q", required = false) String query) {
 		
 
-		List<Pizza> pizzaList = query == null 
-							? pizzaService.findAll()
-							: pizzaService.findByNameOrDescriptionContaining(query); 
+		List<Promoting> promotingList = query == null 
+							? promotingService.findAll()
+							: promotingService.findPromotionByTitle(query); 
 		
-		model.addAttribute("drinkList", pizzaList);
+		model.addAttribute("promotingList", promotingList);
 		model.addAttribute("query", query);
 		
-		return "drink/search";
+		return "promoting/search";
 	}
 
 }

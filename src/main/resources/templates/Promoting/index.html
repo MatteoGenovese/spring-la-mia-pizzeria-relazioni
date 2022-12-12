@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body >
+
+	<h1>Promotion</h1>
+	
+	<ul>
+		<li
+			th:each ="promoting : ${promotingList}"
+			th:object="${promoting}"
+			>
+			<a th:href="@{ /promoting/{id} (id=*{id})}">
+				[[*{title}]] 
+			</a>
+			<br>
+			 [[*{startDate}]] - [[*{endDate}]]
+		</li>
+	</ul>
+	
+	
+	
+	<div th:if ="${promotingList.size == 0}">
+		The list is empty
+	</div>
+	
+	<a href="/promoting/create"> Create new promoting for the menu</a>
+	<br>
+	<a href="/promoting/search">Search promoting</a>
+	<br>
+	<a href="/"> Home</a>
+
+</body>
+</html>
