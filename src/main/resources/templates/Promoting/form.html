@@ -10,7 +10,7 @@
 
 	<form 
 		method="POST"
-		th:action="@{/promoting/{type}  (type=${type})}"
+		th:action="@{/promotings/{type}  (type=${type})}"
 		>
 		
 		<input type="text" name="id" th:field="*{id}" style="display:none;">
@@ -27,16 +27,27 @@
 		<label>endDate</label>
 		<input type="date" name="endDate" th:field="*{endDate}">
 		<br>
-		
-		<label>pizza nr</label>
-			<input type="text" name="pizza" th:field="*{pizza}">
 		<br>
+		
+		<label>Pizza list:</label>
+		<div
+			th:each="pizza : ${pizzaList}"
+			th:object="${pizza}"
+		>
+			<input 
+				type="checkbox" 
+				name="pizzaList" 
+				
+				th:value="*{id}" 
+				th:field="${promoting.pizzaList}">
+			<label>[[*{name}]]</label>
+		</div>
 		
 		<input type="submit" th:value="${type}">
 	
 	</form>
 	
-	<a href="/promoting">Home</a>
+	<a href="/promotings">Home</a>
 				<br>		
 			<br>
 	<div th:if="${errors}">

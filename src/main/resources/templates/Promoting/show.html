@@ -9,25 +9,26 @@
 	<h1>
 		[[*{title}]]
 	</h1>
-	
-	
-	<ul>
-		<li>
+	<div>
 			id: [[*{id}]]
-		</li>
+			 [[*{startDate}]] ~ [[*{endDate}]]		
+	</div>
+	
+
+	
+	<ul th:each="pizza : ${pizzaList}" th:object="pizza">
+	
 		<li>
-			start date: [[*{startDate}]]
 		</li>
-		<li>
-			end date: [[*{endDate}]]
-		</li>
+	
 	</ul>
 	
-	<a th:href="@{/promoting/edit/{id} (id=*{id})}">edit</a>
+
+	<a th:href="@{/promotings/edit/{id} (id=*{id})}">edit</a>
 	
-	<a th:href="@{/promoting/delete/{id} (id=*{id})}">delete</a>
+	<a th:href="@{/promotings/delete/{id} (id=*{id})}">delete</a>
 	
-		<a href="/promoting">Home</a>
+		<a href="/promotings">Home</a>
 
 </body>
 </html>

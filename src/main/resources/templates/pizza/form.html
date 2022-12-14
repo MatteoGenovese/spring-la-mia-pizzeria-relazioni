@@ -28,6 +28,21 @@
 		<input type="number" name="price" th:field="*{price}">
 		<br>
 		
+
+			<select name="promoting" >
+			
+				<option th:value="null" th:field="${pizza.promoting}">NO PROMO
+				</option>
+				
+				
+				<option th:each="promoting : ${promotingList}" th:object="${promoting}" th:value="*{id}" th:field="${pizza.promoting}">[[*{title}]]
+				</option>
+			
+			</select>
+
+		
+		
+		
 		<input type="submit" th:value="${type}">
 	
 	</form>

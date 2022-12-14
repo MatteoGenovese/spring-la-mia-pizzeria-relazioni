@@ -6,8 +6,8 @@ import java.util.List;
 import org.generation.italy.demo.pojo.Drink;
 import org.generation.italy.demo.pojo.Pizza;
 import org.generation.italy.demo.pojo.Interface.PriceableInt;
-import org.generation.italy.demo.service.Drinkservice;
-import org.generation.italy.demo.service.Pizzaservice;
+import org.generation.italy.demo.service.DrinkService;
+import org.generation.italy.demo.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
 	
 	@Autowired
-	private Drinkservice drinkService;
+	private DrinkService drinkService;
 	
 	@Autowired
-	private Pizzaservice pizzaService;
+	private PizzaService pizzaService;
 	
 
 	

@@ -1,6 +1,6 @@
 package org.generation.italy.demo.pojo;
 
-import java.util.List;
+
 
 import org.generation.italy.demo.pojo.Interface.PriceableInt;
 
@@ -10,13 +10,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 
 @Entity
 @Table
@@ -29,7 +29,7 @@ public class Pizza implements PriceableInt{
 	
 	@NotNull(message="Pizza name must not be null")
 	@Size(min=3, max=32, message="Pizza name must be min 3 charachters")
-	@Column(name="name")
+	@Column(length=32)
 	private String name;
 	
 	
@@ -42,8 +42,9 @@ public class Pizza implements PriceableInt{
 	@Min(value=1, message = "Pizza price must be greater than or equal to 1")
 	private int price;
 	
-	@OneToMany(mappedBy = "pizza", cascade = CascadeType.REMOVE)
-	private List<Promoting> promotings;
+
+	@ManyToOne
+	private Promoting promoting;
 
 	public Pizza() { }
 	public Pizza(String name, String description, int price) {
@@ -52,7 +53,21 @@ public class Pizza implements PriceableInt{
 		setDescription(description) ;
 		setPrice(price);
 	}
+	
+	public Pizza(String name, String description, int price, Promoting promoting) {
 
+		this(name, description, price);
+		
+		setPromoting(promoting);
+	}
+	
+	public Promoting getPromoting() {
+		return promoting;
+	}
+	
+	public void setPromoting(Promoting promoting) {
+		this.promoting = promoting;
+	}
 	public int getId() {
 		return id;
 	}

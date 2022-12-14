@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.generation.italy.demo.pojo.Promoting;
-import org.generation.italy.demo.pojo.Promoting;
 import org.generation.italy.demo.repository.PromotingRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,38 +21,37 @@ public class PromotingService {
 	{
 		promotingRepository.save(promoting);
 	}
-	@Transactional
+	
 	public List<Promoting> findAll(){
 		return promotingRepository.findAll();
 	}
 	
-	public Optional<Promoting> getPromotingById(int id)
-	{
-		return promotingRepository.findById(id);
-	}
 	
 	public void delete(int id)
 	{
 		promotingRepository.deleteById(id);
 	}
-	@Transactional
-	public List<Promoting> findPromotionByTitle(String s)
-	{
-		return promotingRepository.findByTitleContaining(s);
-	}
+
 	
+	public Optional<Promoting> getPromotingById(int id)
+	{
+		return promotingRepository.findById(id);
+	}
+
 	@Transactional
-	public List<Promoting> findAllWPromoting() {
+	public List<Promoting> findAllWPizzaList() {
 		
 		List<Promoting> promotingList = promotingRepository.findAll();
 		
 		for (Promoting promoting : promotingList) {
 			
-			Hibernate.initialize(promoting.getPizza());
+			Hibernate.initialize(promoting.getPizzaList());
 		}
 		
 		return promotingList;
 	}
 	
+
+
 
 }

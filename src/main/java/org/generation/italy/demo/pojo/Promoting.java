@@ -1,15 +1,17 @@
 package org.generation.italy.demo.pojo;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -22,27 +24,28 @@ public class Promoting {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column
+	@Column(unique=true)
+	@NotNull(message= "title has to exist")
+	@NotBlank(message= "title can't be empty")
 	private String title;
 	
 	@Column
-	@NotNull
+	@NotNull(message= "startDate has to exist")
 	private LocalDate startDate;
 	
 	@Column
-	@NotNull
+	@NotNull(message= "endDate has to exist")
 	private LocalDate endDate;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Pizza pizza;
+	@OneToMany(mappedBy = "promoting", cascade=CascadeType.REMOVE)
+	private List<Pizza> pizzaList;
 	
 	public Promoting() { }
-	public Promoting(String title, String startDate,String endDate, Pizza pizza) {
+	public Promoting(String title, LocalDate startDate,LocalDate endDate) {
 		setTitle(title);
 		setStartDate(startDate);
 		setEndDate(endDate);
-		setPizza(pizza);
+
 	}
 	
 	public int getId() {
@@ -63,43 +66,45 @@ public class Promoting {
 	}
 
 
-	public String getStartDate() {
+	public LocalDate getStartDate() {
 		
-		return startDate.toString();
+			return startDate;
 	}
 
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(LocalDate startDate) {
 
-		this.startDate = LocalDate.parse(startDate);
+		this.startDate = startDate;
 	}
 
 
-	public String getEndDate() {
-		return endDate.toString();
+	public LocalDate getEndDate() {
+			return endDate;
 	}
 
 
-	public void setEndDate(String endDate) {
-		this.endDate = LocalDate.parse(endDate);
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 	
 	
+
+
+
+	public List<Pizza> getPizzaList() {
+		return pizzaList;
+	}
+	public void setPizzaList(List<Pizza> pizzaList) {
+		this.pizzaList = pizzaList;
+	}
 	
-	public Pizza getPizza() {
-		return pizza;
-	}
-	public void setPizza(Pizza pizza) {
-		this.pizza = pizza;
-	}
 	@Override
 	public String toString() {
-		return "(" + 
+		return "\n (" + 
 				getId()+") "+ 
 				getTitle() + " - " +
-				getStartDate() + " - " +
-				getEndDate() + " - " +
-				getPizza();
+				getStartDate() + " ~ " +
+				getEndDate();
 	}
 	
 	

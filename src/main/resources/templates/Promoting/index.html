@@ -13,11 +13,18 @@
 			th:each ="promoting : ${promotingList}"
 			th:object="${promoting}"
 			>
-			<a th:href="@{ /promoting/{id} (id=*{id})}">
+			<a th:href="@{ /promotings/{id} (id=*{id})}">
 				[[*{title}]] 
 			</a>
 			<br>
 			 [[*{startDate}]] - [[*{endDate}]]
+			 <ul th:each="pizza : ${promoting.pizzaList}" th:object="${pizza}">
+			 
+			 	<li>
+			 	
+			 	[[*{name}]]
+			 	</li>
+			 </ul>
 		</li>
 	</ul>
 	
@@ -27,9 +34,9 @@
 		The list is empty
 	</div>
 	
-	<a href="/promoting/create"> Create new promoting for the menu</a>
+	<a href="/promotings/create"> Create new promoting for the menu</a>
 	<br>
-	<a href="/promoting/search">Search promoting</a>
+	<a href="/promotings/search">Search promoting</a>
 	<br>
 	<a href="/"> Home</a>
 

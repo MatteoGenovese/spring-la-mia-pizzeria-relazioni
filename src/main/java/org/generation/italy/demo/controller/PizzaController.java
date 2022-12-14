@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.generation.italy.demo.pojo.Pizza;
-import org.generation.italy.demo.service.Pizzaservice;
+import org.generation.italy.demo.pojo.Promoting;
+import org.generation.italy.demo.service.PizzaService;
+import org.generation.italy.demo.service.PromotingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,10 @@ import jakarta.validation.Valid;
 public class PizzaController {
 	
 	@Autowired
-	private Pizzaservice pizzaService;
+	private PizzaService pizzaService;
+	
+	@Autowired
+	private PromotingService promotingService;
 	
 	@GetMapping
 	public String getPizzaList(Model model) {
@@ -54,8 +59,13 @@ public class PizzaController {
 
 		
 		Pizza pizza = new Pizza();
-		
 		model.addAttribute("pizza", pizza);
+		
+		List <Promoting> promotingList = promotingService.findAll();
+		model.addAttribute("promotingList", promotingList);
+		
+		
+		
 		model.addAttribute("type", "create");
 		model.addAttribute("h1text", "Create a new pizza for the list:");
 		
@@ -63,9 +73,24 @@ public class PizzaController {
 	}
 	
 	@PostMapping("/create")
-	public String storePizza(@Valid @ModelAttribute("pizza") Pizza pizza)
+	public String storePizza(@Valid @ModelAttribute("pizza") Pizza pizza,Error e, BindingResult bindingResult, RedirectAttributes redirectAttributes)
 	{
-		pizzaService.save(pizza);
+		
+		if (bindingResult.hasErrors())
+		{
+			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+			return "redirect:/pizza/create";
+		}
+		
+		try {
+			
+			pizzaService.save(pizza);
+			
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("errors", ex.getMessage());
+			return "redirect:/pizza/create";
+		}
+			
 		
 		return "redirect:/pizza";
 	}
@@ -82,7 +107,7 @@ public class PizzaController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drinks/create";
+			return "redirect:/pizza/create";
 		}
 		
 		Optional<Pizza> optPizza = pizzaService.getPizzaById(id);
@@ -109,7 +134,7 @@ public class PizzaController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drinks/create";
+			return "redirect:/pizza/create";
 		}
 		pizzaService.save(pizza);
 		
@@ -128,14 +153,14 @@ public class PizzaController {
 			@RequestParam(name = "q", required = false) String query) {
 		
 
-		List<Pizza> pizzaList = query == null 
+		List<Pizza> pizzaList = query == null || query.isEmpty()
 							? pizzaService.findAll()
 							: pizzaService.findByNameOrDescriptionContaining(query); 
 		
-		model.addAttribute("drinkList", pizzaList);
+		model.addAttribute("pizzaList", pizzaList);
 		model.addAttribute("query", query);
 		
-		return "drink/search";
+		return "pizza/search";
 	}
 
 }

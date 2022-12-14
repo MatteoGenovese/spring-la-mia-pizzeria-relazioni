@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.generation.italy.demo.pojo.Pizza;
+import org.generation.italy.demo.pojo.Promoting;
 import org.generation.italy.demo.repository.PizzaRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 @Service
-public class Pizzaservice {
+public class PizzaService {
 	
 	@Autowired
 	private PizzaRepository pizzaRepository;
@@ -38,5 +42,9 @@ public class Pizzaservice {
 		System.err.println(pizzaRepository.findByNameContainingOrDescriptionContaining(s,s));
 		return pizzaRepository.findByNameContainingOrDescriptionContaining(s,s);
 	}
+	
+
+	
+
 
 }

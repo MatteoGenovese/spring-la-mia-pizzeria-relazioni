@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.generation.italy.demo.pojo.Drink;
-import org.generation.italy.demo.service.Drinkservice;
+import org.generation.italy.demo.service.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 public class DrinkController {
 	
 	@Autowired
-	private Drinkservice drinkService;
+	private DrinkService drinkService;
 	
 	@GetMapping
 	public String getDrinkList(Model model) {

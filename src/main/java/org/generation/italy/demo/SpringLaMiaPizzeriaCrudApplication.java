@@ -1,12 +1,13 @@
 package org.generation.italy.demo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.generation.italy.demo.pojo.Drink;
 import org.generation.italy.demo.pojo.Pizza;
 import org.generation.italy.demo.pojo.Promoting;
-import org.generation.italy.demo.service.Drinkservice;
-import org.generation.italy.demo.service.Pizzaservice;
+import org.generation.italy.demo.service.DrinkService;
+import org.generation.italy.demo.service.PizzaService;
 import org.generation.italy.demo.service.PromotingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,10 +18,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner {
 	
 	@Autowired
-	private Pizzaservice pizzaService;
+	private PizzaService pizzaService;
 	
 	@Autowired
-	private Drinkservice drinkService;
+	private DrinkService drinkService;
 	
 	@Autowired
 	private PromotingService promotingService;
@@ -33,12 +34,19 @@ public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		Promoting pro1 = new Promoting("promozione estiva", LocalDate.now(), LocalDate.now());
+		Promoting pro2 = new Promoting("promozione natalizia", LocalDate.now(), LocalDate.now());
+		Promoting pro3 = new Promoting("promozione pasqua", LocalDate.now(), LocalDate.now());
 
-		Pizza p1 = new Pizza("Margherita", "Pomodoro e mozzarella", 7);
-		Pizza p2 = new Pizza("Marco", "Pomodoro, burrata, pesto", 8);
-		Pizza p3 = new Pizza("Prosciutto", "Pomodoro, prosciutto e mozzarella", 9);
-		Pizza p4 = new Pizza("Salame", "Pomodoro, salame e mozzarella", 7);
-		Pizza p5 = new Pizza("Diavola", "Pomodoro, salame piccante e mozzarella", 19);
+		promotingService.save(pro1);
+		promotingService.save(pro2);
+		promotingService.save(pro3);
+		
+		Pizza p1 = new Pizza("Margherita", "Pomodoro e mozzarella", 7, pro1);
+		Pizza p2 = new Pizza("Marco", "Pomodoro, burrata, pesto",8, null);
+		Pizza p3 = new Pizza("Prosciutto", "Pomodoro, prosciutto e mozzarella", 9,pro2);
+		Pizza p4 = new Pizza("Salame", "Pomodoro, salame e mozzarella", 7, pro3);
+		Pizza p5 = new Pizza("Diavola", "Pomodoro, salame piccante e mozzarella", 19, null);
 
 		pizzaService.save(p1);
 		pizzaService.save(p2);
@@ -58,21 +66,32 @@ public class SpringLaMiaPizzeriaCrudApplication implements CommandLineRunner {
 		drinkService.save(d4);
 		drinkService.save(d5);
 		
-		Promoting pro1 = new Promoting("drink metà prezzo", LocalDate.now().toString(),"2022-12-16",p2);
-		Promoting pro2 = new Promoting("pizza metà prezzo", LocalDate.now().toString(),"2022-12-16",p4);
-		Promoting pro3 = new Promoting("pizza gratis solo per oggi", LocalDate.now().toString(),"2022-12-16",p3);
-
-
-		promotingService.save(pro1);
-		promotingService.save(pro2);
-		promotingService.save(pro3);
-
+		System.out.println( "----------------------------------------------------------");
+		System.out.println( "-------READ-----------------------------------------------");
+		System.out.println( "----------------------------------------------------------");
 		
-		for (Promoting promotion : promotingService.findAll())
-		{
-			System.out.println(promotion);
+		List<Pizza> pizzaList = pizzaService.findAll();
+		for (Pizza pizza : pizzaList) {
+			System.out.println( pizza +"\n\t" + pizza.getPromoting());
 		}
 		
+		System.out.println( "----------------------------------------------------------");
+		System.out.println( "----------------------------------------------------------");
+		System.out.println( "----------------------------------------------------------");
+
+		List<Promoting> promotingList = promotingService.findAllWPizzaList();
+		for (Promoting promoting : promotingList) {
+			System.out.println( promoting );
+			for (Pizza pizza : promoting.getPizzaList())
+			{
+				System.out.println("\t"+pizza);
+			}
+		}
+		
+		System.out.println( "----------------------------------------------------------");
+		System.out.println( "----------------------------------------------------------");
+		System.out.println( "----------------------------------------------------------");
+
 	}
 
 }
