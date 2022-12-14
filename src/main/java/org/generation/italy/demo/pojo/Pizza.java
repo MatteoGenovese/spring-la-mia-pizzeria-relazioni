@@ -2,15 +2,18 @@ package org.generation.italy.demo.pojo;
 
 
 
+
+import java.util.List;
+
 import org.generation.italy.demo.pojo.Interface.PriceableInt;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
@@ -41,10 +44,14 @@ public class Pizza implements PriceableInt{
 	@NotNull
 	@Min(value=1, message = "Pizza price must be greater than or equal to 1")
 	private int price;
-	
 
 	@ManyToOne
 	private Promoting promoting;
+	
+	
+	@ManyToMany
+	private List<Ingredient> ingredientList;
+
 
 	public Pizza() { }
 	public Pizza(String name, String description, int price) {
@@ -59,6 +66,21 @@ public class Pizza implements PriceableInt{
 		this(name, description, price);
 		
 		setPromoting(promoting);
+	}
+	
+	public Pizza(String name, String description, int price, List<Ingredient> ingredientList) {
+
+		this(name, description, price);
+		
+		setIngredientList(ingredientList);
+	}
+	
+	public Pizza(String name, String description, int price, Promoting promoting, List<Ingredient> ingredientList ) {
+		
+		this(name, description, price, promoting);
+		
+		setIngredientList(ingredientList);
+		
 	}
 	
 	public Promoting getPromoting() {
@@ -91,8 +113,15 @@ public class Pizza implements PriceableInt{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 
+	public List<Ingredient> getIngredientList() {
+		return ingredientList;
+	}
+	
+	public void setIngredientList(List<Ingredient> ingredientList) {
+		this.ingredientList = ingredientList;
+	}
+	
 	@Override
 	public int getPrice() {
 		return price;

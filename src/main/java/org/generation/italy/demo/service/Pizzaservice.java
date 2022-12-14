@@ -4,13 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.generation.italy.demo.pojo.Pizza;
-import org.generation.italy.demo.pojo.Promoting;
 import org.generation.italy.demo.repository.PizzaRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class PizzaService {
